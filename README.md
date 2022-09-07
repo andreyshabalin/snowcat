@@ -6,7 +6,7 @@ It follows the model originally introduced by Elizabeth G. Atkinson in the TRACT
 (see [manuscript](https://www.nature.com/articles/s41588-020-00766-y), 
 [pipeline](https://github.com/Atkinson-Lab/Tractor)).
 
-Snowcat offers a number of improvements over the TRACTOR pipeline.
+Snowcat offers a number of advantages
 
 1. Fast, parallel code. 
     - Allows one to rerun the whole GWAS in a matter of hours on a single computer.
