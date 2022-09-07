@@ -12,6 +12,7 @@ Snowcat offers a number of improvements over the TRACTOR pipeline.
     - Allows one to rerun the whole GWAS in a matter of hours on a single computer.
 2. Returns more test statistics and QC metrics for each variant
     - T-statistic and p-value for each ancestry
+    - F-test and p-value for the whole model
     - Minor allele frequency (MAF) and minor allele count (MAC) for each ancestry
 
 
