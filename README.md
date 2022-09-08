@@ -16,6 +16,17 @@ Snowcat offers a number of advantages
     - Minor allele frequency (MAF) and minor allele count (MAC) for each ancestry
 
 
+## Details of SNOWCAT pipeline
+
+### Input datasets
+
+1. Genotypes to run GWAS on
+    - file format: VCF as returned by an imputation pipeline 
+(e.g. [Michigan](https://imputationserver.sph.umich.edu/), 
+[TopMed](https://imputation.biodatacatalyst.nhlbi.nih.gov/))
+
+
+
 
 
 
