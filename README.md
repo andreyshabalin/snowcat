@@ -38,18 +38,18 @@ genome builds)
 
     a. Convert the reference panel VCF files
 
-        - Convert to binary vcf format BCF
-        - Exclude SNPs with low MAF
-        - Keep only genotype information (remove dosage and posterior probability info)
+        * Convert to binary vcf format BCF
+        * Exclude SNPs with low MAF
+        * Keep only genotype information (remove dosage and posterior probability info)
 
     b. Prepare Ancestry labels in RFMIX-friendly format
     c. Prepare genetic map files in RFMIX-friendly format
 
 2. Convert and filter genotypes
 
-        - Convert to binary vcf format BCF
-        - Exclude SNPs with low MAF and poor imputation quality
-        - Keep only genotype information (remove dosage and posterior probability info)
+    * Convert to binary vcf format BCF
+    * Exclude SNPs with low MAF and poor imputation quality
+    * Keep only genotype information (remove dosage and posterior probability info)
 
 3. Run RFMIX estimation of local ancestry
 
