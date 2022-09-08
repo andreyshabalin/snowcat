@@ -53,6 +53,16 @@ genome builds)
    * Run R script for every chromosome
    * Combine results, QC, QQ-plot and Manhattan plot.
 
+### Install Snowcat R package
+
+To install Snowcat R package from GitHub,
+run the following code within R
+
+```r
+if(!requireNamespace("devtools", quietly = TRUE))
+    install.packages("devtools")
+devtools::install_github("andreyshabalin/snowcat")
+```
 
 
 
