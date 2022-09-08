@@ -24,6 +24,15 @@ Snowcat offers a number of advantages
     - file format: VCF as returned by an imputation pipeline 
 (e.g. [Michigan](https://imputationserver.sph.umich.edu/), 
 [TopMed](https://imputation.biodatacatalyst.nhlbi.nih.gov/))
+2. Reference genotypes data
+    - VCF files, typically 1000 Genomes Reference panel (available for
+[hg19](http://hgdownload.cse.ucsc.edu/gbdb/hg19/1000Genomes/phase3/) and
+[GRCh38](http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/working/20190425_NYGC_GATK/)
+genome builds)
+    - Ancestry labels for the reference samples
+    - Genetic map files for the target genome
+
+
 
 
 
