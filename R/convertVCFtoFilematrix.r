@@ -124,7 +124,7 @@ convertVCFtoFilematrix = function(vcffilename, fmnameroot){
     
     if(Nfilled == 0){
       # Create an output file
-      library(filematrix);
+      # library(filematrix);
       fm = fm.create(
         filenamebase = fmnameroot,
         nrow = Nraw,
