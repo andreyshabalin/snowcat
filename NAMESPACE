@@ -1,0 +1,11 @@
+export(
+    "convertVCFtoFilematrix"
+)
+
+importFrom(filematrix,
+    fm.create, fm.open
+#   fm.load, fm.create.from.matrix, closeAndDeleteFiles
+)
+importClassesFrom(filematrix, filematrix)
+importMethodsFrom(filematrix, close)
+#importMethodsFrom(filematrix, as.matrix)
