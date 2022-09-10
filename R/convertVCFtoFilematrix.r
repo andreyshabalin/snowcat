@@ -87,9 +87,11 @@ convertVCFtoFilematrix = function(vcffilename, fmnameroot){
 
     # Exclude first 9 columns
     slice0 = gsub(
-      pattern = "^[^\t]+\t[^\t]+\t[^\t]+\t[^\t]+\t[^\t]+\t[^\t]+\t[^\t]+\t[^\t]+\t[^\t]+\t",
+      pattern = "^(([^\t]+\t){9})",
       replacement =  "", 
       x = lines);
+    
+    # substring(slice0[1], 1, 100)
     
     # senity check
     if( !all( nchar(slice0) == (N * 4L - 1L) ) )
