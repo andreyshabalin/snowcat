@@ -139,6 +139,7 @@ for chr in {1..22}; do
 
 <details>
 <summary>Parallel bash loop (needs a fast machine)</summary>
+
 ```bash
 mkdir -p ref_bcf
 parallel --linebuffer "\
@@ -150,6 +151,7 @@ parallel --linebuffer "\
   -O b9 && \
  bcftools index ref_bcf/ref_chr{}.bcf.gz" ::: {1..22}
 ```
+
 </details>
 
 ## 2. Convert and filter genotypes
