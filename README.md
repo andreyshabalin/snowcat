@@ -76,6 +76,8 @@ The code below will assume the imputed genotypes are stored in `data_vcf_by_chr`
 
 Genotypes: `data_vcf_by_chr/chr"$i".dose.vcf.gz`
 
+2. 1000 Genomes Reference panel data
+
 
 
 
