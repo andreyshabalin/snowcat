@@ -133,6 +133,7 @@ for chr in {1..22}; do
   -O b9 \
   -o ref_bcf/ref_chr"$chr".bcf.gz
  bcftools index ref_bcf/ref_chr"$chr".bcf.gz
+done
 ```
 
 </details>
@@ -200,7 +201,7 @@ parallel --linebuffer "\
 ## 3. Run RFMIX estimation of local ancestry
 
 We can now run RFMIX for each chromosome.
-We do to parallelize running RFMIX 
+We do not parallelize running RFMIX 
 as it is very a memory intensive program.
 
 The RFMIX output is saved in `rfmix_out` directory.
@@ -221,11 +222,30 @@ done
 
 **Note:** Replace 30 in `--n-threads=30` to the number of cores on the machine being used.
 
+
+## 4. Convert Imputed genotypes into a custom binary format for fast parallel GWAS.
+
 First, we convert BCF files from step 2 to VCF for processing in R.
 
 The converted files are saved in `data_vcf_by_chr_GT_QC`.
 
-## 4. Convert Imputed genotypes into a custom binary format for fast parallel GWAS.
+<details open>
+<summary>Simple bash loop (may be slow)</summary>
+
+```bash
+mkdir -p data_vcf_by_chr_GT_QC
+for chr in {1..22}; do
+ bcftools view \
+     data_bcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr"$chr".bcf.gz \
+  -o data_vcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr"$chr".vcf.gz \
+  -O z1
+done
+```
+
+</details>
+
+<details>
+<summary>Parallel bash loop (needs a beefy machine)</summary>
 
 ```bash
 mkdir -p data_vcf_by_chr_GT_QC
@@ -236,6 +256,7 @@ parallel --linebuffer "\
   -O z1 " ::: {1..22}
 ```
 
+</details>
 Next, we convert the genotypes to a binary format for fast random access by GWAS code.
 
 ```bash
