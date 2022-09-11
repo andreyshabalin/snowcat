@@ -110,3 +110,7 @@ You may have better luck [here](https://www.dropbox.com/s/slchsd0uyd4hii8/geneti
 The code below assumes the genetic map to be located in the `map` directory:
 
 **Genetic map:** `map/map_file.txt`
+
+## 1. Convert the reference panel files
+
+We convert the reference panel VCF files to BCF to achieve several goals 
