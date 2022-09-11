@@ -15,7 +15,7 @@ Snowcat offers a number of advantages
    - F-test and p-value for the whole model
    - Minor allele frequency (MAF) and minor allele count (MAC) for each ancestry
 
-## Details of SNOWCAT pipeline
+## Overview of SNOWCAT pipeline
 
 ### Input datasets
 
@@ -64,7 +64,17 @@ if(!requireNamespace("devtools", quietly = TRUE))
 devtools::install_github("andreyshabalin/snowcat")
 ```
 
+# Running SNOWCAT pipeline
 
+## Input data
+
+1. Imputed genotypes
+
+Imputation servers typically return imputed genotypes in files named
+`chr1.dose.vcf.gz` to `chr22.dose.vcf.gz`.
+The code below will assume the imputed genotypes are stored in `data_vcf_by_chr` directory:
+
+Genotypes: `data_vcf_by_chr/chr"$i".dose.vcf.gz`
 
 
 
