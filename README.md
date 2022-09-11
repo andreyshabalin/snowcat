@@ -267,8 +267,8 @@ parallel --linebuffer "\
 ```R
 library(snowcat)
 for( chr in 1:22 ){
-  vcffilename = paste0('data_vcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr',chr,'.vcf.gz')
-  fmnameroot = paste0('data_bcf_by_chr_GT_QC_fm/chr',chr)
+  vcffilename = paste0("data_vcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr",chr,".vcf.gz")
+  fmnameroot = paste0("data_bcf_by_chr_GT_QC_fm/chr",chr)
   convertVCFtoFilematrix(vcffilename, fmnameroot)
 }
 ```
