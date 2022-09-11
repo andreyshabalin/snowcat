@@ -113,5 +113,24 @@ The code below assumes the genetic map to be located in the `map` directory:
 
 ## 1. Convert the reference panel files
 
-We convert the reference panel VCF files to BCF to achieve several goals 
+We convert the reference panel VCF files to BCF to achieve several goals.
+* Convert from VCF to binary vcf format BCF to greatly speed up processing by RFMIX.
+* Exclude SNPs with low MAF. Very low minor allele veriants are not useful for the analysis.
+* Keep only genotype information (remove dosage and posterior probability info). This greatly reduces the file size and speeds up processing by RFMIX.
+
+The converted files are saved in `ref_bcf` directory.
+
+```bash
+mkdir -p ref_bcf
+parallel --linebuffer "\
+ bcftools annotate \
+     ref_vcf/ALL.chr{}.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz \
+  -x 'FORMAT' \
+  -i 'AF>.001 && AF<.999' \
+  -o ref_bcf/ref_chr{}.bcf.gz \
+  -O b9 && \
+ bcftools index ref_bcf/ref_chr{}.bcf.gz" ::: {1..22}
+```
+
+
 
