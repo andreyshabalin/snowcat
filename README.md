@@ -261,6 +261,8 @@ parallel --linebuffer "\
 
 **Next**, we convert the genotypes to a binary format for fast random access by GWAS code.
 
+The converted files are saved in `data_bcf_by_chr_GT_QC_fm`.
+
 <details open>
 <summary>Simple R loop (may be slow)</summary>
 
@@ -292,8 +294,10 @@ parallel --linebuffer "\
 </details>
 
 
-### 5. Run GWAS with correction for local ancestry.
+## 5. Run GWAS with correction for local ancestry.
 
+Running GWAS for each chromosome
+can be parallelized across CPU cores of the machine.
 
 
 
