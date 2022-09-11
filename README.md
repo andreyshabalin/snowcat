@@ -120,6 +120,23 @@ We convert the reference panel VCF files to BCF to achieve several goals.
 
 The converted files are saved in `ref_bcf` directory.
 
+<details open>
+<summary>Simple bash loop (may be slow)</summary>
+```bash
+mkdir -p ref_bcf
+for chr in {1..22}; do
+ bcftools annotate \
+     ref_vcf/ALL.chr"$chr".phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz \
+  -x 'FORMAT' \
+  -i 'AF>.001 && AF<.999' \
+  -o ref_bcf/ref_chr"$chr".bcf.gz \
+  -O b9
+ bcftools index ref_bcf/ref_chr"$chr".bcf.gz
+```
+</details>
+
+<details>
+<summary>Parallel bash loop (needs a fast machine)</summary>
 ```bash
 mkdir -p ref_bcf
 parallel --linebuffer "\
@@ -131,7 +148,7 @@ parallel --linebuffer "\
   -O b9 && \
  bcftools index ref_bcf/ref_chr{}.bcf.gz" ::: {1..22}
 ```
-
+</details>
 
 ## 2. Convert and filter genotypes
 
