@@ -83,5 +83,5 @@ The 1000 Genomes project genotypes are freely available online ([hg19](http://hg
 in VCF format.
 The code below assumes the reference panel file names to be those for hg19 genome build.
 
-Reference panel genotypes: `ref_vcf/ALL.chr"$i".phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz`
+Reference panel: `ref_vcf/ALL.chr"$i".phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz`
 
