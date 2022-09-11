@@ -76,12 +76,12 @@ The code below assumes the imputed genotypes are stored in `data_vcf_by_chr` dir
 
 Genotypes: `data_vcf_by_chr/chr"$i".dose.vcf.gz`
 
-2. 1000 Genomes reference panel data
+2. 1000 Genomes reference panel genotypes
 
 The 1000 Genomes project genotypes are freely available online ([hg19](http://hgdownload.cse.ucsc.edu/gbdb/hg19/1000Genomes/phase3/) and
 [GRCh38](ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/GRCh38_reference_genome/))
 in VCF format.
 The code below assumes the reference panel file names to be those for hg19 genome build.
 
-Reference panel: `ref_vcf/ALL.chr"$i".phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz`
+Reference: `ref_vcf/ALL.chr"$i".phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz`
 
