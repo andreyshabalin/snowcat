@@ -257,7 +257,26 @@ parallel --linebuffer "\
 ```
 
 </details>
-Next, we convert the genotypes to a binary format for fast random access by GWAS code.
+
+
+**Next**, we convert the genotypes to a binary format for fast random access by GWAS code.
+
+<details open>
+<summary>Simple R loop (may be slow)</summary>
+
+```R
+for( chr in 1:22 ){
+  library(snowcat)
+  vcffilename = paste0('data_vcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr',chr,'.vcf.gz')
+  fmnameroot = paste0('data_bcf_by_chr_GT_QC_fm/chr',chr)
+  convertVCFtoFilematrix(vcffilename, fmnameroot)
+}
+```
+
+</details>
+
+<details>
+<summary>Parallel bash loop (needs a beefy machine)</summary>
 
 ```bash
 parallel --linebuffer "\
@@ -269,6 +288,9 @@ parallel --linebuffer "\
   convertVCFtoFilematrix(vcffilename, fmnameroot);\
  \"" ::: {1..22}
 ```
+
+</details>
+
 
 ### 5. Run GWAS with correction for local ancestry.
 
