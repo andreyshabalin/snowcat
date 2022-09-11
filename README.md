@@ -49,7 +49,7 @@ genome builds)
 4. Convert Imputed genotypes into a custom binary format for fast parallel GWAS.
    * Convert BCFs from step 2 into VCF for processing in R
    * Convert VCF into custom binary format.
-5. Run GWAS using RFMIX output and genotypes in binary format.
+5. Run GWAS with correction for local ancestry.
    * Run R script for every chromosome
    * Combine results, QC, QQ-plot and Manhattan plot.
 
