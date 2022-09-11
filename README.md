@@ -133,4 +133,44 @@ parallel --linebuffer "\
 ```
 
 
+## 2. Convert and filter genotypes
+
+Similarly, we convert the genotype VCF files to BCF.
+In addition to previous filtering criteria, we exclude variants with imputation R2 below 0.5.
+
+The converted files are saved in `data_bcf_by_chr_GT_QC` directory.
+
+```bash
+mkdir -p data_bcf_by_chr_GT_QC
+parallel --linebuffer "\
+ bcftools annotate \
+     data_vcf_by_chr/chr{}.dose.vcf.gz \
+  -x 'FORMAT' \
+  -i 'R2>.5 & MAF>.001' \
+  -o data_bcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr{}.bcf.gz \
+  -O b9 && \
+ bcftools index data_bcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr{}.bcf.gz" ::: {1..22}
+```
+
+## 3. Run RFMIX estimation of local ancestry
+
+We can now run RFMIX for each chromosome.
+We do to parallelize running RFMIX 
+as it is very a memory intensive program.
+
+The RFMIX output is saved in `rfmix_out` directory.
+
+```bash
+mkdir -p rfmix_out
+for i in {22..1}; do
+ ../rfmix/rfmix \
+  --query-file=data_bcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr"$i".bcf.gz \
+  --reference-file=ref_bcf/ref_chr"$i".bcf.gz \
+  --sample-map=map/1KG_map.txt \
+  --genetic-map=map/map_file.txt \
+  --chromosome="$i" \
+  --n-threads=30 \
+  --output-basename=rfmix_out/rfmix_chr"$i"_R2_.5_MAF_.001
+done
+```
 
