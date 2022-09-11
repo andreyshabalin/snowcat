@@ -127,28 +127,28 @@ The converted files are saved in `ref_bcf` directory.
 mkdir -p ref_bcf
 for chr in {1..22}; do
  bcftools annotate \
-     ref_vcf/ALL.chr"$chr".phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz \
+  ref_vcf/ALL.chr"$chr".phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz \
   -x 'FORMAT' \
   -i 'AF>.001 && AF<.999' \
-  -o ref_bcf/ref_chr"$chr".bcf.gz \
-  -O b9
+  -O b9 \
+  -o ref_bcf/ref_chr"$chr".bcf.gz
  bcftools index ref_bcf/ref_chr"$chr".bcf.gz
 ```
 
 </details>
 
 <details>
-<summary>Parallel bash loop (needs a fast machine)</summary>
+<summary>Parallel bash loop (needs a beefy machine)</summary>
 
 ```bash
 mkdir -p ref_bcf
 parallel --linebuffer "\
  bcftools annotate \
-     ref_vcf/ALL.chr{}.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz \
+  ref_vcf/ALL.chr{}.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz \
   -x 'FORMAT' \
   -i 'AF>.001 && AF<.999' \
-  -o ref_bcf/ref_chr{}.bcf.gz \
-  -O b9 && \
+  -O b9 \
+  -o ref_bcf/ref_chr{}.bcf.gz && \
  bcftools index ref_bcf/ref_chr{}.bcf.gz" ::: {1..22}
 ```
 
@@ -161,6 +161,27 @@ In addition to previous filtering criteria, we exclude variants with imputation 
 
 The converted files are saved in `data_bcf_by_chr_GT_QC` directory.
 
+<details open>
+<summary>Simple bash loop (may be slow)</summary>
+
+```bash
+mkdir -p data_bcf_by_chr_GT_QC
+for chr in {1..22}; do
+ bcftools annotate \
+     data_vcf_by_chr/chr"$chr".dose.vcf.gz \
+  -x 'FORMAT' \
+  -i 'R2>.5 & MAF>.001' \
+  -O b9 \
+  -o data_bcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr"$chr".bcf.gz
+ bcftools index data_bcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr"$chr".bcf.gz
+done
+```
+
+</details>
+
+<details>
+<summary>Parallel bash loop (needs a beefy machine)</summary>
+
 ```bash
 mkdir -p data_bcf_by_chr_GT_QC
 parallel --linebuffer "\
@@ -168,10 +189,13 @@ parallel --linebuffer "\
      data_vcf_by_chr/chr{}.dose.vcf.gz \
   -x 'FORMAT' \
   -i 'R2>.5 & MAF>.001' \
-  -o data_bcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr{}.bcf.gz \
-  -O b9 && \
+  -O b9 \
+  -o data_bcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr{}.bcf.gz && \
  bcftools index data_bcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr{}.bcf.gz" ::: {1..22}
 ```
+
+</details>
+
 
 ## 3. Run RFMIX estimation of local ancestry
 
