@@ -174,3 +174,42 @@ for i in {22..1}; do
 done
 ```
 
+**Note:** Replace 30 in `--n-threads=30` to the number of cores on the machine being used.
+
+First, we convert BCF files from step 2 to VCF for processing in R.
+
+The converted files are saved in `data_vcf_by_chr_GT_QC`.
+
+## 4. Convert Imputed genotypes into a custom binary format for fast parallel GWAS.
+
+```bash
+mkdir -p data_vcf_by_chr_GT_QC
+parallel --linebuffer "\
+ bcftools view \
+     data_bcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr{}.bcf.gz \
+  -o data_vcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr{}.vcf.gz \
+  -O z1 " ::: {1..22}
+```
+
+Next, we convert the genotypes to a binary format for fast random access by GWAS code.
+
+```bash
+parallel --linebuffer "\
+ Rscript -e \"\
+  chr = {}; \
+  library(snowcat); \
+  vcffilename = paste0('data_vcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr',chr,'.vcf.gz'); \
+  fmnameroot = paste0('data_bcf_by_chr_GT_QC_fm/chr',chr); \
+  convertVCFtoFilematrix(vcffilename, fmnameroot);\
+ \"" ::: {1..22}
+```
+
+### 5. Run GWAS with correction for local ancestry.
+
+
+
+
+
+
+
+
