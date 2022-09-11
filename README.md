@@ -122,6 +122,7 @@ The converted files are saved in `ref_bcf` directory.
 
 <details open>
 <summary>Simple bash loop (may be slow)</summary>
+
 ```bash
 mkdir -p ref_bcf
 for chr in {1..22}; do
@@ -133,6 +134,7 @@ for chr in {1..22}; do
   -O b9
  bcftools index ref_bcf/ref_chr"$chr".bcf.gz
 ```
+
 </details>
 
 <details>
