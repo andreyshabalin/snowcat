@@ -488,21 +488,21 @@ Here is the preview of GWAS results with QC metrics:
 |     Field          |      SNP1      |     SNP2       |
 |:-------------------|---------------:|---------------:|
 |chr                 |22              |22              |
-|pos                 |17031494        |17066596        |
+|pos                 | 17,031,494     | 17,066,596     |
 |ID                  |22:17031494:A:G |22:17066596:A:G |
 |ref                 |A               |A               |
 |alt                 |G               |G               |
 |                    |                |                |
-|AlleleTotal_AFR     |392             |392             |
-|AlleleTotal_AMR     |1345            |1345            |
-|AlleleTotal_EAS     |8806            |8806            |
-|AlleleTotal_EUR     |56642           |56642           |
-|AlleleTotal_SAS     |1511            |1511            |
+|AlleleTotal_AFR     |    392         |    392         |
+|AlleleTotal_AMR     |  1,345         |  1,345         |
+|AlleleTotal_EAS     |  8,806         |  8,806         |
+|AlleleTotal_EUR     | 56,642         | 56,642         |
+|AlleleTotal_SAS     |  1,511         |  1,511         |
 |                    |                |                |
 |AltAlleleCnt_AFR    |29              |0               |
 |AltAlleleCnt_AMR    |35              |6               |
 |AltAlleleCnt_EAS    |95              |20              |
-|AltAlleleCnt_EUR    |2750            |430             |
+|AltAlleleCnt_EUR    |2,750           |430             |
 |AltAlleleCnt_SAS    |58              |2               |
 |                    |                |                |
 |MinorAlleleFreq_AFR |0.07397         |0.00000         |
@@ -511,17 +511,17 @@ Here is the preview of GWAS results with QC metrics:
 |MinorAlleleFreq_EUR |0.04855         |0.00759         |
 |MinorAlleleFreq_SAS |0.03838         |0.00132         |
 |                    |                |                |
-|Nca_AFR             |53              |53              |
+|Nca_AFR             |53.0            |53.0            |
 |Nca_AMR             |304.5           |304.5           |
 |Nca_EAS             |89.5            |89.5            |
 |Nca_EUR             |5119.5          |5119.5          |
 |Nca_SAS             |19.5            |19.5            |
 |                    |                |                |
-|Nco_AFR             |143             |143             |
-|Nco_AMR             |368             |368             |
-|Nco_EAS             |4313.5          |4313.5          |
-|Nco_EUR             |23201.5         |23201.5         |
-|Nco_SAS             |736             |736             |
+|Nco_AFR             |143.0           |143.0           |
+|Nco_AMR             |368.0           |368.0           |
+|Nco_EAS             |4,313.5         |4,313.5         |
+|Nco_EUR             |23,201.5        |23,201.5        |
+|Nco_SAS             |736.0           |736.0           |
 |                    |                |                |
 |beta_AFR            |-0.05349        | NA             |
 |beta_AMR            | 0.03792        | 0.25132        |
