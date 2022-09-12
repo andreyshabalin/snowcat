@@ -479,7 +479,7 @@ Here is the preview of GWAS results with QC metrics:
 |ID                  |22:17031494:A:G |22:17066596:A:G |
 |ref                 |A               |A               |
 |alt                 |G               |G               |
-| ----               | ----           | ----           |
+|                    |                |                |
 |AlleleTotal_AFR     |392             |392             |
 |AlleleTotal_AMR     |1345            |1345            |
 |AlleleTotal_EAS     |8806            |8806            |
