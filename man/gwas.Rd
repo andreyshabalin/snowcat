@@ -5,9 +5,6 @@
   Run linear regression GWAS
 	with correction for local ancestry
   as estimated by RFMIX.
-
-
-
 }
 \usage{
 run.gwas.linear(
@@ -60,34 +57,38 @@ run.gwas.linear(
 \examples{
 \dontrun{
 # Number of principal components to correct for
-npcs = 20;
+npcs = 20
 
 # Chromosome number
-chr = 22;
+chr = 22
 
 # File name for the filematrix with genotypes
-fmifilename = paste0("data_bcf_by_chr_GT_QC_fm/chr",chr);
+fmifilename = paste0("data_bcf_by_chr_GT_QC_fm/chr",chr)
 
 # Estimated local ancestry from RFMIX
 mspfilename = paste0("rfmix_out/rfmix_chr",chr,"_R2_.5_MAF_.001.msp.tsv")
 
 # Output directory
-outputdir = paste0("gwas/pc",npcs, "_linear");
+outputdir = paste0("gwas/pc",npcs, "_linear")
 
 # Data frame with covariates
 pca = fread("data_plink/pca.eigenvec",
             header = TRUE,
-            data.table = FALSE);
-cvrt = as.matrix(pca[ paste0("PC", seq_len(npcs)) ]);
-rownames(pca) = pca$IID;
-rm(npcs, pca);
+            data.table = FALSE)
+cvrt = as.matrix(pca[ paste0("PC",seq_len(npcs)) ])
+rownames(pca) = pca$IID
+rm(npcs, pca)
 
 # Outcome variable
-samples = fread(file = paste0(fmifilename,".samples"), sep = "", quote = FALSE, header = FALSE)[[1]];
-tmp = substr(samples, 1, 1);
+samples = fread(file = paste0(fmifilename,".samples"),
+                sep = "",
+                quote = FALSE,
+                header = FALSE)[[1]]
+tmp = substr(samples, 1, 1)
 phenotype = as.numeric(tmp == tail(tmp,1))
-rm(samples, tmp);
+rm(samples, tmp)
 
+# Run the GWAS
 run.gwas.linear(
     chr,
     fmifilename,
@@ -95,5 +96,9 @@ run.gwas.linear(
     outputdir,
     cvrt,
     phenotype)
+
+# Look at the first 2 variants
+gwas = data.table::fread("gwas/pc20_linear/gwas_chr22.sumstat.txt", nrow = 2)
+show(t(gwas))
 }
 }

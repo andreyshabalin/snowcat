@@ -1,21 +1,23 @@
 convertVCFtoFilematrix = function(vcffilename, fmnameroot){
   
   # Sanity checks
-  stopifnot(is.character(vcffilename));
-  stopifnot(is.character(fmnameroot));
-  
-  stopifnot(!is.na(vcffilename));
-  stopifnot(!is.na(fmnameroot));
-  
-  stopifnot(length(vcffilename) == 1)
-  stopifnot(length(fmnameroot) == 1)
-  
-  if(FALSE){
-    setwd("D:/tractor/hg19/");
-    chr = 22L;
-    vcffilename = paste0("data_vcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr",chr,".vcf.gz");
-    fmnameroot = paste0("data_bcf_by_chr_GT_QC_fm/chr",chr);
+  {
+    stopifnot( is.character(vcffilename) );
+    stopifnot( is.character(fmnameroot) );
+    
+    stopifnot( !is.na(vcffilename) );
+    stopifnot( !is.na(fmnameroot) );
+    
+    stopifnot( length(vcffilename) == 1 );
+    stopifnot( length(fmnameroot) == 1 );
   }
+  
+  # if(FALSE){
+  #   setwd("D:/tractor/hg19/");
+  #   chr = 22L;
+  #   vcffilename = paste0("data_vcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr",chr,".vcf.gz");
+  #   fmnameroot = paste0("data_bcf_by_chr_GT_QC_fm/chr",chr);
+  # }
 
   if(!file.exists(vcffilename))
     stop("File not found: ", vcffilename);
@@ -147,7 +149,7 @@ convertVCFtoFilematrix = function(vcffilename, fmnameroot){
     Nfilled = Nfilled + length(lines);
     message("Processed ", Nfilled, " variants in ", basename(vcffilename));
   }
-  close(fm)
+  close(fm);
   close(finfo);
   message("Done processing ", basename(vcffilename));
   

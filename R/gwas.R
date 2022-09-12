@@ -443,11 +443,12 @@ run.gwas.linear = function(
     
     message("Exporting variables into the precesses");
     
-    clusterExport(cl, c("fmifilename","fmofilename"), envir = environment());
-    clusterExport(cl, c("chr", "Nsam", "Nsnp", "Nans"), envir = environment());
-    clusterExport(cl, c("cc1", "ind1", "ind2", "phenotype"), envir = environment());
-    clusterExport(cl, c("cvrtqr"), envir = environment());
-  
+    exportnames = c("fmifilename","fmofilename",
+                    "chr", "Nsam", "Nsnp", "Nans",
+                    "cc1", "ind1", "ind2",
+                    "phenotype", "cvrtqr");
+    clusterExport(cl, exportnames, envir = environment());
+    rm(exportnames);
     
     message("Running GWAS in parallel");
     z = clusterApplyLB(cl, parlist, doSlice);
@@ -465,7 +466,7 @@ run.gwas.linear = function(
     message("Starting single thread analysis"); 
     
     for( i in seq_along(parlist) ){ # i = length(parlist);
-      message('Processing slice ', i, ', progress: ', parlist[[i]]$lbl);
+      message("Processing slice ", i, ", progress: ", parlist[[i]]$lbl);
       doSlice(parlist[[i]]);
     }
     
@@ -477,7 +478,13 @@ run.gwas.linear = function(
   message("Saving GWAS output in a text file");
   mat = fm.load(fmofilename);
   df = t(mat);
-  out = data.frame(df[,1:2], ID = info$ID, ref = info$REF, alt = info$ALT, df[,-(1:2)])[which(df[,1] != 0),];
+  out = data.frame(
+    df[,1:2], 
+    ID = info$ID, 
+    ref = info$REF, 
+    alt = info$ALT, 
+    df[,-(1:2)]);
+  out = out[which(df[,1] != 0),];
   fwrite(x = out, file = paste0(fmofilename,".sumstat.txt"), sep = "\t", eol = "\n");
   
   message("Finished SNOWCAT linear GWAS, chr ", chr);
