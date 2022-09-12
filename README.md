@@ -433,6 +433,9 @@ in the first letter of the sample name.
 
 
 ```r
+library(data.table)
+library(snowcat)
+
 # Number of principal components to correct for
 npcs = 20
 
