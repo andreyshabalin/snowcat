@@ -49,7 +49,12 @@ genome builds)
 4. Convert Imputed genotypes into a custom binary format for fast parallel GWAS.
    * Convert BCFs from step 2 into VCF for processing in R
    * Convert VCF into custom binary format.
-5. Run GWAS with correction for local ancestry.
+5. Run PCA on imputed genotypes for use as covariates
+   * Convert imputed genotypes to plink format by chromosome
+   * Prune SNPs for each chromosome
+   * Combine pruned SNPs across chromosomes
+   * Run PCA on the combined dataset
+6. Run GWAS with correction for local ancestry.
    * Run R script for every chromosome
    * Combine results, QC, QQ-plot and Manhattan plot.
 
@@ -293,8 +298,121 @@ parallel --linebuffer "\
 
 </details>
 
+## 5. Run PCA on imputed genotypes for use as covariates
 
-## 5. Run GWAS with correction for local ancestry.
+Any GWAS analysis should include correction for a number of ancestry PCs.
+Thus, we run PCA analysis on the imputed genotypes
+
+The PCA analysis and intermediate plink files are saved in `data_plink` directory. \
+
+<details open>
+<summary>Simple bash loop (may be slow)</summary>
+
+```bash
+mkdir -p data_plink
+
+for chr in {1..22}; do
+
+  # Convert imputed genotypes to plink format by chromosome
+  # and filter by minor allele frequency
+  plink2 \
+    --vcf data_vcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr"$chr".vcf.gz \
+    --double-id \
+    --make-bed \
+    --maf 0.01 \
+    --out data_plink/chr"$chr"
+    
+  # Prune SNPs for each chromosome
+  plink \
+    --bfile data_plink/chr"$chr" \
+    --indep-pairphase 1000 10 0.2 \
+    --out data_plink/prune."$chr"
+    
+  plink2 \
+    --bfile data_plink/chr"$chr" \
+    --extract data_plink/prune."$chr".prune.in \
+    --make-pgen \
+    --out data_plink/chr"$chr".p
+    
+done
+
+# Combine pruned SNPs across chromosomes
+if [ -f data_plink/1list.txt ]; then
+  rm data_plink/1list.txt
+fi
+for chr in {1..22}; do
+  echo data_plink/chr"$chr".p >> data_plink/1list.txt
+done
+
+plink2 \
+ --pmerge-list data_plink/1list.txt \
+ --make-pgen \
+ --out data_plink/all_chr
+
+# Run PCA in pruned SNPs, extract top 250 PCs
+plink2 \
+  --pfile data_plink/all_chr \
+  --pca 250 \
+  --out data_plink/pca
+
+```
+
+</details>
+
+<details>
+<summary>Parallel bash loop (needs a beefy machine)</summary>
+
+```bash
+mkdir -p data_plink
+
+# Convert imputed genotypes to plink format by chromosome
+# Filter by minor allele frequency
+# Prune SNPs for each chromosome
+parallel --linebuffer "\
+  plink2 \
+    --vcf data_vcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr{}.vcf.gz \
+    --double-id \
+    --make-bed \
+    --maf 0.01 \
+    --out data_plink/chr{} && \
+  plink \
+    --bfile data_plink/chr{} \
+    --indep-pairphase 1000 10 0.2 \
+    --out data_plink/prune.{} && \
+  plink2 \
+    --bfile data_plink/chr{} \
+    --extract data_plink/prune.{}.prune.in \
+    --make-pgen \
+    --out data_plink/chr{}.p" ::: {1..22}
+
+
+# Combine pruned SNPs across chromosomes
+if [ -f data_plink/1list.txt ]; then
+  rm data_plink/1list.txt
+fi
+for chr in {1..22}; do
+  echo data_plink/chr"$chr".p >> data_plink/1list.txt
+done
+
+plink2 \
+ --pmerge-list data_plink/1list.txt \
+ --make-pgen \
+ --out data_plink/all_chr
+
+# Run PCA in pruned SNPs, extract top 250 PCs
+plink2 \
+  --pfile data_plink/all_chr \
+  --pca 250 \
+  --out data_plink/pca
+
+```
+
+</details>
+
+The PCs are saved in the `data_plink/pca.eigenvec` file.
+
+
+## 6. Run GWAS with correction for local ancestry.
 
 Running GWAS for each chromosome
 can be parallelized across CPU cores of the machine.
