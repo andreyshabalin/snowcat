@@ -58,6 +58,17 @@ genome builds)
    * Run R script for every chromosome
    * Combine results, QC, QQ-plot and Manhattan plot.
 
+Here is the dependency chart for the pipeline steps:
+
+```mermaid
+graph TD;
+    1-->3;
+    2-->3;
+    3-->6;
+    4-->6;
+    5-->6;
+```
+
 ### Install Snowcat R package
 
 To install Snowcat R package from GitHub,
