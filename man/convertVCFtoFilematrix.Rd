@@ -34,5 +34,3 @@ convertVCFtoFilematrix(vcffilename, fmnameroot)
     convertVCFtoFilematrix(vcffilename, fmnameroot)
 }
 }
-\keyword{ bam }
-\keyword{ Rbam }
