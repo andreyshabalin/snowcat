@@ -19,6 +19,6 @@ BugReports: https://github.com/andreyshabalin/snowcat/issues
 License: LGPL-3
 LazyLoad: yes
 NeedsCompilation: no
-Depends: R (>= 3.3.0), filematrix
-Imports: stats, utils, data.table, parallel
+Depends: R (>= 3.3.0), filematrix, data.table
+Imports: stats, utils, parallel
 
