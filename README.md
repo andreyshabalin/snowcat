@@ -131,13 +131,13 @@ The converted files are saved in `ref_bcf` directory.
 ```bash
 mkdir -p ref_bcf
 for chr in {1..22}; do
- bcftools annotate \
-  ref_vcf/ALL.chr"$chr".phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz \
-  -x 'FORMAT' \
-  -i 'AF>.001 && AF<.999' \
-  -O b9 \
-  -o ref_bcf/ref_chr"$chr".bcf.gz
- bcftools index ref_bcf/ref_chr"$chr".bcf.gz
+  bcftools annotate \
+    ref_vcf/ALL.chr"$chr".phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz \
+    -x 'FORMAT' \
+    -i 'AF>.001 && AF<.999' \
+    -O b9 \
+    -o ref_bcf/ref_chr"$chr".bcf.gz
+  bcftools index ref_bcf/ref_chr"$chr".bcf.gz
 done
 ```
 
@@ -149,13 +149,13 @@ done
 ```bash
 mkdir -p ref_bcf
 parallel --linebuffer "\
- bcftools annotate \
-  ref_vcf/ALL.chr{}.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz \
-  -x 'FORMAT' \
-  -i 'AF>.001 && AF<.999' \
-  -O b9 \
-  -o ref_bcf/ref_chr{}.bcf.gz && \
- bcftools index ref_bcf/ref_chr{}.bcf.gz" ::: {1..22}
+  bcftools annotate \
+    ref_vcf/ALL.chr{}.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz \
+    -x 'FORMAT' \
+    -i 'AF>.001 && AF<.999' \
+    -O b9 \
+    -o ref_bcf/ref_chr{}.bcf.gz && \
+  bcftools index ref_bcf/ref_chr{}.bcf.gz" ::: {1..22}
 ```
 
 </details>
@@ -173,13 +173,13 @@ The converted files are saved in `data_bcf_by_chr_GT_QC` directory.
 ```bash
 mkdir -p data_bcf_by_chr_GT_QC
 for chr in {1..22}; do
- bcftools annotate \
-     data_vcf_by_chr/chr"$chr".dose.vcf.gz \
-  -x 'FORMAT' \
-  -i 'R2>.5 & MAF>.001' \
-  -O b9 \
-  -o data_bcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr"$chr".bcf.gz
- bcftools index data_bcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr"$chr".bcf.gz
+  bcftools annotate \
+    data_vcf_by_chr/chr"$chr".dose.vcf.gz \
+    -x 'FORMAT' \
+    -i 'R2>.5 & MAF>.001' \
+    -O b9 \
+    -o data_bcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr"$chr".bcf.gz
+  bcftools index data_bcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr"$chr".bcf.gz
 done
 ```
 
@@ -191,13 +191,13 @@ done
 ```bash
 mkdir -p data_bcf_by_chr_GT_QC
 parallel --linebuffer "\
- bcftools annotate \
-     data_vcf_by_chr/chr{}.dose.vcf.gz \
-  -x 'FORMAT' \
-  -i 'R2>.5 & MAF>.001' \
-  -O b9 \
-  -o data_bcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr{}.bcf.gz && \
- bcftools index data_bcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr{}.bcf.gz" ::: {1..22}
+  bcftools annotate \
+    data_vcf_by_chr/chr{}.dose.vcf.gz \
+    -x 'FORMAT' \
+    -i 'R2>.5 & MAF>.001' \
+    -O b9 \
+    -o data_bcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr{}.bcf.gz && \
+  bcftools index data_bcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr{}.bcf.gz" ::: {1..22}
 ```
 
 </details>
@@ -214,14 +214,14 @@ The RFMIX output is saved in `rfmix_out` directory.
 ```bash
 mkdir -p rfmix_out
 for i in {22..1}; do
- ../rfmix/rfmix \
-  --query-file=data_bcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr"$i".bcf.gz \
-  --reference-file=ref_bcf/ref_chr"$i".bcf.gz \
-  --sample-map=map/1KG_map.txt \
-  --genetic-map=map/map_file.txt \
-  --chromosome="$i" \
-  --n-threads=30 \
-  --output-basename=rfmix_out/rfmix_chr"$i"_R2_.5_MAF_.001
+  rfmix/rfmix \
+    --query-file=data_bcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr"$i".bcf.gz \
+    --reference-file=ref_bcf/ref_chr"$i".bcf.gz \
+    --sample-map=map/1KG_map.txt \
+    --genetic-map=map/map_file.txt \
+    --chromosome="$i" \
+    --n-threads=30 \
+    --output-basename=rfmix_out/rfmix_chr"$i"_R2_.5_MAF_.001
 done
 ```
 
@@ -240,10 +240,10 @@ The converted files are saved in `data_vcf_by_chr_GT_QC`.
 ```bash
 mkdir -p data_vcf_by_chr_GT_QC
 for chr in {1..22}; do
- bcftools view \
-     data_bcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr"$chr".bcf.gz \
-  -o data_vcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr"$chr".vcf.gz \
-  -O z1
+  bcftools view \
+    data_bcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr"$chr".bcf.gz \
+    -o data_vcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr"$chr".vcf.gz \
+    -O z1
 done
 ```
 
@@ -255,10 +255,10 @@ done
 ```bash
 mkdir -p data_vcf_by_chr_GT_QC
 parallel --linebuffer "\
- bcftools view \
-     data_bcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr{}.bcf.gz \
-  -o data_vcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr{}.vcf.gz \
-  -O z1 " ::: {1..22}
+  bcftools view \
+    data_bcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr{}.bcf.gz \
+    -o data_vcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr{}.vcf.gz \
+    -O z1 " ::: {1..22}
 ```
 
 </details>
@@ -271,7 +271,7 @@ The converted files are saved in `data_bcf_by_chr_GT_QC_fm`.
 <details open>
 <summary>Simple R loop (may be slow)</summary>
 
-```R
+```r
 library(snowcat)
 for( chr in 1:22 ){
   vcffilename = paste0("data_vcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr",chr,".vcf.gz")
@@ -287,13 +287,13 @@ for( chr in 1:22 ){
 
 ```bash
 parallel --linebuffer "\
- Rscript -e \"\
-  chr = {}; \
-  library(snowcat); \
-  vcffilename = paste0('data_vcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr',chr,'.vcf.gz'); \
-  fmnameroot = paste0('data_bcf_by_chr_GT_QC_fm/chr',chr); \
-  convertVCFtoFilematrix(vcffilename, fmnameroot);\
- \"" ::: {1..22}
+  Rscript -e \"\
+    chr = {}; \
+    library(snowcat); \
+    vcffilename = paste0('data_vcf_by_chr_GT_QC/GT_R2_.5_MAF_.001_chr',chr,'.vcf.gz'); \
+    fmnameroot = paste0('data_bcf_by_chr_GT_QC_fm/chr',chr); \
+    convertVCFtoFilematrix(vcffilename, fmnameroot); \
+  \"" ::: {1..22}
 ```
 
 </details>
@@ -345,9 +345,9 @@ for chr in {1..22}; do
 done
 
 plink2 \
- --pmerge-list data_plink/1list.txt \
- --make-pgen \
- --out data_plink/all_chr
+  --pmerge-list data_plink/1list.txt \
+  --make-pgen \
+  --out data_plink/all_chr
 
 # Run PCA in pruned SNPs, extract top 250 PCs
 plink2 \
@@ -395,9 +395,9 @@ for chr in {1..22}; do
 done
 
 plink2 \
- --pmerge-list data_plink/1list.txt \
- --make-pgen \
- --out data_plink/all_chr
+  --pmerge-list data_plink/1list.txt \
+  --make-pgen \
+  --out data_plink/all_chr
 
 # Run PCA in pruned SNPs, extract top 250 PCs
 plink2 \
