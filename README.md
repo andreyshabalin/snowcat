@@ -54,7 +54,7 @@ genome builds)
    * Prune SNPs for each chromosome
    * Combine pruned SNPs across chromosomes
    * Run PCA on the combined dataset
-6. Run GWAS with correction for local ancestry.
+6. Run GWAS with correction for local ancestry
    * Run R script for every chromosome
    * Combine results, QC, QQ-plot and Manhattan plot.
 
@@ -417,6 +417,101 @@ The PCs are saved in the `data_plink/pca.eigenvec` file.
 Running GWAS for each chromosome
 can be parallelized across CPU cores of the machine.
 
+```r
+# Number of principal components to correct for
+npcs = 20;
+
+# Chromosome number
+chr = 22;
+
+# File name for the filematrix with genotypes
+fmifilename = paste0("data_bcf_by_chr_GT_QC_fm/chr",chr);
+
+# Estimated local ancestry from RFMIX
+mspfilename = paste0("rfmix_out/rfmix_chr",chr,"_R2_.5_MAF_.001.msp.tsv")
+
+# Output directory
+outputdir = paste0("gwas/pc",npcs, "_linear");
+
+# Data frame with covariates
+pca = fread("data_plink/pca.eigenvec",
+            header = TRUE,
+            data.table = FALSE);
+cvrt = as.matrix(pca[ paste0("PC", seq_len(npcs)) ]);
+rownames(pca) = pca$IID;
+rm(npcs, pca);
+
+# Outcome variable
+samples = fread(file = paste0(fmifilename,".samples"), sep = "", quote = FALSE, header = FALSE)[[1]];
+tmp = substr(samples, 1, 1);
+phenotype = as.numeric(tmp == tail(tmp,1))
+rm(samples, tmp);
+
+run.gwas.linear(
+    chr,
+    fmifilename,
+    mspfilename,
+    outputdir,
+    cvrt,
+    phenotype)
+
+gwas = data.table::fread("gwas/pc20_linear/gwas_chr22.sumstat.txt", nrow = 2)
+
+```
+
+Here is the preview of GWAS results with QC metrics:
+
+|     Field          |      SNP1      |     SNP2       |
+|:-------------------|---------------:|---------------:|
+|chr                 |22              |22              |
+|pos                 |17031494        |17066596        |
+|ID                  |22:17031494:A:G |22:17066596:A:G |
+|ref                 |A               |A               |
+|alt                 |G               |G               |
+|AlleleTotal_AFR     |392             |392             |
+|AlleleTotal_AMR     |1345            |1345            |
+|AlleleTotal_EAS     |8806            |8806            |
+|AlleleTotal_EUR     |56642           |56642           |
+|AlleleTotal_SAS     |1511            |1511            |
+|AltAlleleCnt_AFR    |29              |0               |
+|AltAlleleCnt_AMR    |35              |6               |
+|AltAlleleCnt_EAS    |95              |20              |
+|AltAlleleCnt_EUR    |2750            |430             |
+|AltAlleleCnt_SAS    |58              |2               |
+|MinorAlleleFreq_AFR |0.07397         |0.00000         |
+|MinorAlleleFreq_AMR |0.02602         |0.00446         |
+|MinorAlleleFreq_EAS |0.01078         |0.00227         |
+|MinorAlleleFreq_EUR |0.04855         |0.00759         |
+|MinorAlleleFreq_SAS |0.03838         |0.00132         |
+|Nca_AFR             |53              |53              |
+|Nca_AMR             |304.5           |304.5           |
+|Nca_EAS             |89.5            |89.5            |
+|Nca_EUR             |5119.5          |5119.5          |
+|Nca_SAS             |19.5            |19.5            |
+|Nco_AFR             |143             |143             |
+|Nco_AMR             |368             |368             |
+|Nco_EAS             |4313.5          |4313.5          |
+|Nco_EUR             |23201.5         |23201.5         |
+|Nco_SAS             |736             |736             |
+|beta_AFR            |-0.05349        | NA             |
+|beta_AMR            | 0.03792        | 0.25132        |
+|beta_EAS            |-0.00133        |-0.00941        |
+|beta_EUR            | 0.00360        |-0.02690        |
+|beta_SAS            | 0.00093        |-0.00779        |
+|zscore_AFR          |-0.779          | NA             |
+|zscore_AMR          | 0.645          | 1.797          |
+|zscore_EAS          |-0.037          |-0.123          |
+|zscore_EUR          | 0.530          |-1.635          |
+|zscore_SAS          | 0.020          |-0.032          |
+|pvalue_AFR          | 0.4356         | NA             |
+|pvalue_AMR          | 0.5183         | 0.0722         |
+|pvalue_EAS          | 0.9698         | 0.9019         |
+|pvalue_EUR          | 0.5959         | 0.1020         |
+|pvalue_SAS          | 0.9839         | 0.9742         |
+|R2                  | 0.00013        | 0.00026        |
+|Ftest               | 0.502          | 1.142          |
+|Pvalue              | 0.873          | 0.330          |
+ 
 
 
 

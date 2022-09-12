@@ -1,11 +1,23 @@
 export(
-    "convertVCFtoFilematrix"
+    "convertVCFtoFilematrix",
+    "run.gwas.linear"
 )
 
-importFrom(filematrix,
-    fm.create, fm.open
-#   fm.load, fm.create.from.matrix, closeAndDeleteFiles
+importFrom("filematrix",
+    "fm.create", "fm.open", "fm.load"
+#   fm.create.from.matrix, closeAndDeleteFiles
 )
+
+importFrom("stats",
+	"pf", "pt")
+importFrom("utils",
+	"tail")
+importFrom("parallel",
+	"makeCluster", "clusterExport", "clusterApplyLB", "stopCluster")
+importFrom("data.table",
+	"fread", "fwrite")
+
 importClassesFrom(filematrix, filematrix)
 importMethodsFrom(filematrix, close)
 #importMethodsFrom(filematrix, as.matrix)
+
