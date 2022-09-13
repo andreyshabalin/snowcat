@@ -1,6 +1,6 @@
 # SNOWCAT: Streamlining Our Workflow: Code Alternative for TRACTOR
 
-Snowcat is a Genome-wide association study (GWAS) pipeline with
+Snowcat is a genome-wide association study (GWAS) pipeline with
 correction for local ancestry as estimated with RFMIX.
 It follows the model originally introduced by Elizabeth G. Atkinson in the TRACTOR pipeline
 (see [manuscript](https://www.nature.com/articles/s41588-020-00766-y), 
